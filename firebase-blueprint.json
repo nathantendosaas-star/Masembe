@@ -1,0 +1,28 @@
+{
+  "entities": {
+    "Inquiry": {
+      "title": "Inquiry",
+      "description": "A contact inquiry from a user regarding a car or property.",
+      "type": "object",
+      "properties": {
+        "firstName": { "type": "string" },
+        "lastName": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "phone": { "type": "string" },
+        "message": { "type": "string" },
+        "itemType": { "type": "string", "enum": ["car", "property"] },
+        "itemId": { "type": "string" },
+        "itemName": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "status": { "type": "string", "enum": ["new", "read", "archived"] }
+      },
+      "required": ["firstName", "lastName", "email", "message", "itemType", "itemId", "itemName", "createdAt", "status"]
+    }
+  },
+  "firestore": {
+    "/inquiries/{inquiryId}": {
+      "schema": { "$ref": "#/entities/Inquiry" },
+      "description": "Stores all inquiries."
+    }
+  }
+}
