@@ -7,6 +7,7 @@ import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'motion/react';
 import Lenis from 'lenis';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 import ZeroPage from './pages/ZeroPage';
 import CarLandingPage from './pages/cars/CarLandingPage';
 import PropertyLandingPage from './pages/property/PropertyLandingPage';
@@ -130,6 +131,7 @@ export default function App() {
       ) : (
         <AppContent />
       )}
+      <SpeedInsights />
     </Router>
   );
 }
