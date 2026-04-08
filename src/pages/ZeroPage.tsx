@@ -2,9 +2,67 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion, useScroll, useTransform, AnimatePresence, useSpring } from 'motion/react';
 import { Link } from 'react-router-dom';
 import { MessageSquare, X, Send, ChevronDown } from 'lucide-react';
+import { cn } from '../lib/utils';
 import IdentitySwitcher from '../components/IdentitySwitcher';
+import WatermarkLayer from '../components/WatermarkLayer';
 import { useFirestoreDoc } from '../hooks/useFirestore';
 import { submitInquiry } from '../hooks/useRealtimeDB';
+
+const ProgressDot = ({ progress, start, end, color }: { progress: any, start: number, end: number, color: string }) => {
+  const height = useTransform(progress, [start, end], ["0%", "100%"]);
+  return (
+    <motion.div className="w-1 h-8 bg-black/5 rounded-full overflow-hidden">
+      <motion.div className="w-full" style={{ height, backgroundColor: color }} />
+    </motion.div>
+  );
+};
+
+const ContentSection = ({ progress, start, end, index, title, desc, linkText, linkTo, isAuto }: any) => {
+  const opacity = useTransform(progress, [start - 0.05, start, end - 0.02, end], [0, 1, 1, 0]);
+  const y = useTransform(progress, [start - 0.05, start, end - 0.02, end], [40, 0, 0, -40]);
+
+  return (
+    <motion.div 
+      style={{ opacity, y, position: 'absolute', top: 0, left: 0 }}
+      className="w-full"
+    >
+      <span className={cn(
+        "text-[10px] font-black tracking-[0.4em] uppercase mb-6 block",
+        isAuto ? "text-black/40 font-sans" : "text-[#d4af37] font-serif italic"
+      )}>
+        0{index + 1} // {isAuto ? 'Automotive' : 'Portfolio'}
+      </span>
+      <h2 className={cn(
+        "text-4xl md:text-7xl font-black tracking-tighter uppercase mb-8 leading-none",
+        isAuto ? "font-sans" : "md:text-6xl font-light font-serif italic tracking-tight"
+      )}>
+        {title}
+      </h2>
+      <p className={cn(
+        "text-base md:text-lg text-black/60 leading-relaxed font-light tracking-wide",
+        isAuto ? "font-sans" : ""
+      )}>
+        {desc}
+      </p>
+      {linkText && (
+        <Link to={linkTo} className="inline-flex items-center gap-6 group mt-12">
+          {!isAuto && (
+            <>
+              <span className="text-[10px] font-bold tracking-[0.4em] uppercase border-b border-black/10 pb-2 group-hover:border-black transition-colors">{linkText}</span>
+              <ChevronDown size={16} className="-rotate-90 group-hover:translate-x-2 transition-transform" />
+            </>
+          )}
+          {isAuto && (
+            <>
+              <ChevronDown size={16} className="rotate-90 group-hover:-translate-x-2 transition-transform" />
+              <span className="text-[10px] font-bold tracking-[0.4em] uppercase border-b border-black/10 pb-2 group-hover:border-black transition-colors">{linkText}</span>
+            </>
+          )}
+        </Link>
+      )}
+    </motion.div>
+  );
+};
 
 const DEFAULT_RE_SECTIONS = [
   {
@@ -175,54 +233,35 @@ export default function ZeroPage() {
       <div className="relative h-[300vh] w-full z-20">
         <div className="sticky top-0 h-screen w-full flex flex-col md:flex-row items-center overflow-hidden">
           {/* Content Side */}
-          <div className="w-full md:w-1/2 h-full flex flex-col items-center justify-center px-8 md:px-24 z-10 bg-[#F7F7F5]">
-            <div className="max-w-md w-full relative h-[400px]">
-              {reSections.map((section, idx) => {
-                // Calculate individual section scroll mapping
-                const start = 0.18 + (idx * 0.1);
-                const end = 0.18 + ((idx + 1) * 0.1);
-                
-                // Use custom hooks carefully inside map by pre-calculating or using a sub-component if needed, 
-                // but since the map size is fixed and hook order won't change, we can use useTransform here.
-                // eslint-disable-next-line react-hooks/rules-of-hooks
-                const opacity = useTransform(smoothProgress, [start - 0.05, start, end - 0.02, end], [0, 1, 1, 0]);
-                // eslint-disable-next-line react-hooks/rules-of-hooks
-                const y = useTransform(smoothProgress, [start - 0.05, start, end - 0.02, end], [40, 0, 0, -40]);
-
-                return (
-                  <motion.div 
-                    key={`re-${idx}`}
-                    style={{ opacity, y, position: 'absolute', top: 0, left: 0 }}
-                    className="w-full"
-                  >
-                    <span className="text-[10px] font-black tracking-[0.4em] uppercase text-[#d4af37] mb-6 block font-serif italic">0{idx + 1} // Portfolio</span>
-                    <h2 className="text-4xl md:text-6xl font-light font-serif italic tracking-tight mb-8 leading-tight">{section.title}</h2>
-                    <p className="text-base md:text-lg text-black/60 leading-relaxed font-light tracking-wide">{section.desc}</p>
-                    {idx === reSections.length - 1 && (
-                      <Link to="/property" className="inline-flex items-center gap-6 group mt-12">
-                        <span className="text-[10px] font-bold tracking-[0.4em] uppercase border-b border-black/10 pb-2 group-hover:border-black transition-colors">Enter Real Estate</span>
-                        <ChevronDown size={16} className="-rotate-90 group-hover:translate-x-2 transition-transform" />
-                      </Link>
-                    )}
-                  </motion.div>
-                );
-              })}
+          <div className="w-full md:w-1/2 h-full flex flex-col items-center justify-center px-8 md:px-24 z-10 bg-[#F7F7F5] relative">
+            <WatermarkLayer text="ESTATE" theme="re" />
+            <div className="max-w-md w-full relative h-[400px] z-20">
+              {reSections.map((section, idx) => (
+                <ContentSection
+                  key={`re-${idx}`}
+                  progress={smoothProgress}
+                  start={0.18 + (idx * 0.1)}
+                  end={0.18 + ((idx + 1) * 0.1)}
+                  index={idx}
+                  title={section.title}
+                  desc={section.desc}
+                  linkText={idx === reSections.length - 1 ? "Enter Real Estate" : null}
+                  linkTo="/property"
+                  isAuto={false}
+                />
+              ))}
             </div>
             
             {/* Scroll Progress Tracker */}
             <div className="absolute left-12 bottom-24 hidden md:flex flex-col gap-4">
               {reSections.map((_, i) => (
-                <motion.div 
-                  key={`dot-re-${i}`}
-                  className="w-1 h-8 bg-black/5 rounded-full overflow-hidden"
-                >
-                  <motion.div 
-                    className="w-full bg-[#d4af37]"
-                    style={{ 
-                      height: useTransform(smoothProgress, [0.18 + (i * 0.1), 0.18 + ((i + 1) * 0.1)], ["0%", "100%"])
-                    }}
-                  />
-                </motion.div>
+                <ProgressDot 
+                  key={`dot-re-${i}`} 
+                  progress={smoothProgress} 
+                  start={0.18 + (i * 0.1)} 
+                  end={0.18 + ((i + 1) * 0.1)} 
+                  color="#d4af37" 
+                />
               ))}
             </div>
           </div>
@@ -251,51 +290,35 @@ export default function ZeroPage() {
           </motion.div>
 
           {/* Content Side */}
-          <div className="w-full md:w-1/2 h-full flex flex-col items-center justify-center px-8 md:px-24 z-10 bg-white">
-            <div className="max-w-md w-full relative h-[400px]">
-              {autoSections.map((section, idx) => {
-                const start = 0.55 + (idx * 0.08);
-                const end = 0.55 + ((idx + 1) * 0.08);
-                
-                // eslint-disable-next-line react-hooks/rules-of-hooks
-                const opacity = useTransform(smoothProgress, [start - 0.05, start, end - 0.02, end], [0, 1, 1, 0]);
-                // eslint-disable-next-line react-hooks/rules-of-hooks
-                const y = useTransform(smoothProgress, [start - 0.05, start, end - 0.02, end], [40, 0, 0, -40]);
-
-                return (
-                  <motion.div 
-                    key={`auto-${idx}`}
-                    style={{ opacity, y, position: 'absolute', top: 0, left: 0 }}
-                    className="w-full"
-                  >
-                    <span className="text-[10px] font-black tracking-[0.4em] uppercase text-black/40 mb-6 block font-sans">0{idx + 1} // Automotive</span>
-                    <h2 className="text-4xl md:text-7xl font-black tracking-tighter uppercase mb-8 leading-none font-sans">{section.title}</h2>
-                    <p className="text-base md:text-lg text-black/60 leading-relaxed font-light tracking-wide font-sans">{section.desc}</p>
-                    {idx === autoSections.length - 1 && (
-                      <Link to="/cars" className="inline-flex items-center gap-6 group mt-12">
-                        <ChevronDown size={16} className="rotate-90 group-hover:-translate-x-2 transition-transform" />
-                        <span className="text-[10px] font-bold tracking-[0.4em] uppercase border-b border-black/10 pb-2 group-hover:border-black transition-colors">Enter Grid Motors</span>
-                      </Link>
-                    )}
-                  </motion.div>
-                );
-              })}
+          <div className="w-full md:w-1/2 h-full flex flex-col items-center justify-center px-8 md:px-24 z-10 bg-white relative">
+            <WatermarkLayer text="MOTORS" theme="auto" />
+            <div className="max-w-md w-full relative h-[400px] z-20">
+              {autoSections.map((section, idx) => (
+                <ContentSection
+                  key={`auto-${idx}`}
+                  progress={smoothProgress}
+                  start={0.55 + (idx * 0.08)}
+                  end={0.55 + ((idx + 1) * 0.08)}
+                  index={idx}
+                  title={section.title}
+                  desc={section.desc}
+                  linkText={idx === autoSections.length - 1 ? "Enter Grid Motors" : null}
+                  linkTo="/cars"
+                  isAuto={true}
+                />
+              ))}
             </div>
 
             {/* Scroll Progress Tracker */}
             <div className="absolute right-12 bottom-24 hidden md:flex flex-col gap-4">
               {autoSections.map((_, i) => (
-                <motion.div 
-                  key={`dot-auto-${i}`}
-                  className="w-1 h-8 bg-black/5 rounded-full overflow-hidden"
-                >
-                  <motion.div 
-                    className="w-full bg-[#dc2626]"
-                    style={{ 
-                      height: useTransform(smoothProgress, [0.55 + (i * 0.08), 0.55 + ((i + 1) * 0.08)], ["0%", "100%"])
-                    }}
-                  />
-                </motion.div>
+                <ProgressDot 
+                  key={`dot-auto-${i}`} 
+                  progress={smoothProgress} 
+                  start={0.55 + (i * 0.08)} 
+                  end={0.55 + ((i + 1) * 0.08)} 
+                  color="#dc2626" 
+                />
               ))}
             </div>
           </div>
@@ -303,8 +326,9 @@ export default function ZeroPage() {
       </div>
 
       {/* --- MANIFESTO --- */}
-      <section className="relative h-screen w-full flex items-center justify-center bg-[#F7F7F5] z-40 px-6">
-        <div className="max-w-4xl text-center">
+      <section className="relative h-screen w-full flex items-center justify-center bg-[#F7F7F5] z-40 px-6 overflow-hidden">
+        <WatermarkLayer text="MASEMBE" theme="re" />
+        <div className="max-w-4xl text-center relative z-20">
           <span className="text-[10px] font-bold tracking-[0.8em] uppercase text-[#d4af37] mb-12 block italic">Est. 2024</span>
           <h2 className="text-4xl md:text-7xl font-light font-serif italic tracking-tight mb-16 leading-tight">Luxury is not a choice.<br /><span className="font-sans not-italic font-black text-black">It is our DNA.</span></h2>
           <Link to="/about" className="group relative inline-flex items-center gap-8 px-16 py-6 border border-black/10 text-[10px] font-bold tracking-[0.5em] uppercase overflow-hidden transition-colors hover:border-black">
