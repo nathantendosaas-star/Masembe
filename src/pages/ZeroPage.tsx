@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom';
 import { MessageSquare, X, Send, ChevronDown } from 'lucide-react';
 import IdentitySwitcher from '../components/IdentitySwitcher';
 import { db } from '../lib/firebase';
-import { collection, addDoc } from 'firebase/firestore';
 import { useFirestoreDoc } from '../hooks/useFirestore';
+import { submitInquiry } from '../hooks/useRealtimeDB';
 
 const DEFAULT_RE_SECTIONS = [
   {
@@ -94,8 +94,7 @@ export default function ZeroPage() {
     };
 
     try {
-      const docRef = await addDoc(collection(db, 'inquiries'), data);
-      console.log("ZeroPage inquiry submitted successfully with ID: ", docRef.id);
+      await submitInquiry(data);
       setSubmitSuccess(true);
       setInquiryForm({ name: '', email: '', message: '' });
       setTimeout(() => {

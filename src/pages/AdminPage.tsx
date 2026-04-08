@@ -28,6 +28,7 @@ import {
   Edit2
 } from 'lucide-react';
 import { useFirestoreCollection, useFirestoreDoc } from '@/hooks/useFirestore';
+import { useRealtimeDB, updateInquiryStatus, deleteInquiryFromRTDB } from '@/hooks/useRealtimeDB';
 import type { Car as CarType } from '@/data/cars';
 import type { Property as PropertyType } from '@/data/properties';
 
@@ -190,12 +191,7 @@ export default function AdminPage() {
 function InquiriesTab() {
   const [filter, setFilter] = useState<'all' | 'new' | 'read'>('all');
   
-  const constraints = useMemo(() => [
-    orderBy('createdAt', 'desc'),
-    limit(50)
-  ], []);
-
-  const { data: inquiries, loading, error } = useFirestoreCollection<Inquiry>('inquiries', constraints);
+  const { data: inquiries, loading, error } = useRealtimeDB<Inquiry>('inquiries', 50);
 
   const filteredInquiries = inquiries.filter(i => {
     if (filter === 'all') return i.status !== 'archived';
@@ -205,7 +201,7 @@ function InquiriesTab() {
   const markAsRead = async (id: string, currentStatus: string) => {
     if (currentStatus === 'read') return;
     try {
-      await updateDoc(doc(db, 'inquiries', id), { status: 'read' });
+      await updateInquiryStatus(id, 'read');
     } catch (error) {
       console.error("Error updating status:", error);
     }
@@ -214,7 +210,7 @@ function InquiriesTab() {
   const deleteInquiry = async (id: string) => {
     if (window.confirm('Delete this inquiry permanently?')) {
       try {
-        await deleteDoc(doc(db, 'inquiries', id));
+        await deleteInquiryFromRTDB(id);
       } catch (error) {
         console.error("Error deleting inquiry:", error);
       }
@@ -227,11 +223,10 @@ function InquiriesTab() {
     return (
       <div className="bg-red-50 border border-red-200 p-8 text-center rounded-lg">
         <AlertCircle className="text-red-600 mx-auto mb-4" size={32} />
-        <h3 className="text-lg font-bold text-red-900 mb-2">Query Error</h3>
+        <h3 className="text-lg font-bold text-red-900 mb-2">Sync Error</h3>
         <p className="text-red-700 text-sm mb-4">{error.message}</p>
         <p className="text-xs text-red-600 uppercase tracking-widest font-bold">
-          If this is a new setup, you may need to create a Firestore Index. 
-          Check the browser console for a link to generate it.
+          Check your Realtime Database security rules in the Firebase Console.
         </p>
       </div>
     );

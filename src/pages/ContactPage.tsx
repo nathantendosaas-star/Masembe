@@ -4,7 +4,7 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { db } from '@/lib/firebase';
-import { collection, addDoc } from 'firebase/firestore';
+import { submitInquiry } from '@/hooks/useRealtimeDB';
 
 const gridIcon = L.divIcon({
   className: 'custom-icon',
@@ -103,8 +103,7 @@ export default function ContactPage() {
     };
 
     try {
-      const docRef = await addDoc(collection(db, 'inquiries'), data);
-      console.log("Contact inquiry submitted successfully with ID: ", docRef.id);
+      await submitInquiry(data);
       setSubmitSuccess(true);
       e.currentTarget.reset();
     } catch (error: any) {
