@@ -3,10 +3,28 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'motion/react';
 import Lenis from 'lenis';
+
+// Scroll to Top behavior for React Router + Lenis
+function ScrollToTop({ lenisRef }: { lenisRef: React.MutableRefObject<Lenis | null> }) {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    // Reset browser scroll
+    window.scrollTo(0, 0);
+    
+    // Reset Lenis scroll if instance exists
+    if (lenisRef.current) {
+      lenisRef.current.scrollTo(0, { immediate: true });
+    }
+  }, [pathname, lenisRef]);
+
+  return null;
+}
+
 import ZeroPage from './pages/ZeroPage';
 import CarLandingPage from './pages/cars/CarLandingPage';
 import PropertyLandingPage from './pages/property/PropertyLandingPage';
@@ -70,6 +88,8 @@ function PageTransition({ children }: { children: React.ReactNode }) {
 
 function AppContent() {
   const location = useLocation();
+  const lenisRef = useRef<Lenis | null>(null);
+
   const isAuto = location.pathname.startsWith('/cars');
   const isHome = location.pathname === '/';
   const isAbout = location.pathname === '/about';
@@ -94,6 +114,8 @@ function AppContent() {
       orientation: 'vertical',
     });
 
+    lenisRef.current = lenis;
+
     function raf(time: number) {
       lenis.raf(time);
       requestAnimationFrame(raf);
@@ -103,11 +125,13 @@ function AppContent() {
 
     return () => {
       lenis.destroy();
+      lenisRef.current = null;
     };
   }, []);
 
   return (
     <>
+      <ScrollToTop lenisRef={lenisRef} />
       <GlobalHeader />
       <div className="min-h-screen flex flex-col">
         <main className="flex-grow flex flex-col">
