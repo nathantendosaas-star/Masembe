@@ -1,7 +1,7 @@
 import type { Property } from '@/data/properties';
 import { useState } from 'react';
 import { db } from '@/lib/firebase';
-import { collection, addDoc } from 'firebase/firestore';
+import { submitInquiry } from '@/hooks/useRealtimeDB';
 import { motion } from 'motion/react';
 
 export default function PropertyModalContent({ property }: { property: Property }) {
@@ -29,8 +29,7 @@ export default function PropertyModalContent({ property }: { property: Property 
     };
 
     try {
-      const docRef = await addDoc(collection(db, 'inquiries'), data);
-      console.log("Property inquiry submitted successfully with ID: ", docRef.id);
+      await submitInquiry(data);
       setSubmitSuccess(true);
       e.currentTarget.reset();
     } catch (error: any) {

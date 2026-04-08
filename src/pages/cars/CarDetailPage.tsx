@@ -4,8 +4,8 @@ import type { Car } from '../../data/cars';
 import { motion, useScroll, useTransform } from 'motion/react';
 import { useState, useRef } from 'react';
 import { db } from '../../lib/firebase';
-import { collection, addDoc } from 'firebase/firestore';
 import { useFirestoreDoc } from '../../hooks/useFirestore';
+import { submitInquiry } from '../../hooks/useRealtimeDB';
 
 export default function CarDetailPage() {
   const { id } = useParams();
@@ -44,14 +44,9 @@ export default function CarDetailPage() {
     };
 
     try {
-      const submissionPromise = addDoc(collection(db, 'inquiries'), data);
-      const timeoutPromise = new Promise((_, reject) => 
-        setTimeout(() => reject(new Error('Submission timed out. Please check your connection.')), 10000)
-      );
-
-      await Promise.race([submissionPromise, timeoutPromise]);
-      
+      await submitInquiry(data);
       setSubmitSuccess(true);
+
       e.currentTarget.reset();
     } catch (error) {
       console.error("Error submitting inquiry: ", error);

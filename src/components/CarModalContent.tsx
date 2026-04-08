@@ -2,7 +2,7 @@ import type { Car } from '@/data/cars';
 import { useState } from 'react';
 import { motion } from 'motion/react';
 import { db } from '@/lib/firebase';
-import { collection, addDoc } from 'firebase/firestore';
+import { submitInquiry } from '@/hooks/useRealtimeDB';
 
 export default function CarModalContent({ car }: { car: Car }) {
   const [activeTab, setActiveTab] = useState('overview');
@@ -29,8 +29,7 @@ export default function CarModalContent({ car }: { car: Car }) {
     };
 
     try {
-      const docRef = await addDoc(collection(db, 'inquiries'), data);
-      console.log("Inquiry submitted successfully with ID: ", docRef.id);
+      await submitInquiry(data);
       setSubmitSuccess(true);
       e.currentTarget.reset();
     } catch (error: any) {
