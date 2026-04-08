@@ -215,10 +215,22 @@ export default function ZeroPage() {
       </nav>
 
       {/* --- HERO CHAPTER --- */}
-      <section className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden z-10">
-        <motion.div style={{ opacity: heroOpacity, scale: heroScale }} className="text-center px-6">
-          <motion.span className="block text-[10px] md:text-xs font-black tracking-[0.6em] uppercase text-black/30 mb-8">{heroSubtitle}</motion.span>
-          <motion.h1 className="text-5xl md:text-8xl lg:text-[10rem] font-black tracking-tighter uppercase leading-none">
+      <section className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden z-10 bg-black">
+        <WatermarkLayer text="COLLECTIVE" theme="re" />
+        <motion.div style={{ opacity: heroOpacity, scale: heroScale }} className="text-center px-6 relative z-20">
+          <motion.span 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="block text-[10px] md:text-xs font-black tracking-[0.8em] uppercase text-[#d4af37] mb-12 italic"
+          >
+            {heroSubtitle}
+          </motion.span>
+          <motion.h1 
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="text-6xl md:text-9xl lg:text-[12rem] font-black tracking-tighter uppercase leading-[0.8] text-white"
+          >
             {heroTitle.split('\n').map((line, i) => (
               <React.Fragment key={i}>
                 {line}
@@ -226,6 +238,15 @@ export default function ZeroPage() {
               </React.Fragment>
             ))}
           </motion.h1>
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1, duration: 1 }}
+            className="absolute -bottom-24 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4"
+          >
+            <span className="text-[8px] font-bold tracking-[0.4em] uppercase text-white/20">Scroll to Explore</span>
+            <div className="w-[1px] h-12 bg-gradient-to-b from-[#d4af37] to-transparent" />
+          </motion.div>
         </motion.div>
       </section>
 
