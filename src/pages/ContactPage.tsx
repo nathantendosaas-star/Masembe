@@ -252,7 +252,7 @@ export default function ContactPage() {
                 }
               `}</style>
               <MapContainer 
-                center={[0.3168, 32.5795]} 
+                center={[0.3168, 32.5855]} 
                 zoom={14} 
                 scrollWheelZoom={false}
                 className="absolute inset-0 w-full h-full"
@@ -261,16 +261,16 @@ export default function ContactPage() {
                   attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
                   url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
                 />
-                <Marker position={[0.3136, 32.5811]} icon={gridIcon}>
+                <Marker position={[0.3168, 32.5855]} icon={gridIcon}>
                   <Popup>
                     <div className="font-bold uppercase tracking-widest text-[#dc2626] text-xs mb-1">Grid Motors</div>
-                    <div className="text-xs opacity-80">Plot 1, Kampala Road</div>
+                    <div className="text-xs opacity-80">Plot 30 Jinja Road, Conrad House</div>
                   </Popup>
                 </Marker>
-                <Marker position={[0.3200, 32.5780]} icon={reIcon}>
+                <Marker position={[0.3170, 32.5850]} icon={reIcon}>
                   <Popup>
                     <div className="font-bold uppercase tracking-widest text-[#d4af37] text-xs mb-1">Masembe RE</div>
-                    <div className="text-xs opacity-80">Nakasero Hill</div>
+                    <div className="text-xs opacity-80">Plot 30 Jinja Road, Conrad House</div>
                   </Popup>
                 </Marker>
               </MapContainer>
@@ -280,17 +280,17 @@ export default function ContactPage() {
               <div>
                 <h3 className="font-bold tracking-widest uppercase mb-2 text-[#dc2626]">Grid Motors</h3>
                 <p className="text-sm opacity-70 leading-relaxed">
-                  Plot 1, Kampala Road<br/>
+                  Plot 30 Jinja Road, Conrad House<br/>
                   Kampala, Uganda<br/>
-                  +256 123 456 789
+                  +256 750 508 658
                 </p>
               </div>
               <div>
                 <h3 className="font-bold tracking-widest uppercase mb-2 text-[#d4af37]">Masembe RE</h3>
                 <p className="text-sm opacity-70 leading-relaxed">
-                  Nakasero Hill<br/>
+                  Plot 30 Jinja Road, Conrad House<br/>
                   Kampala, Uganda<br/>
-                  +256 987 654 321
+                  +256 750 508 658
                 </p>
               </div>
             </div>

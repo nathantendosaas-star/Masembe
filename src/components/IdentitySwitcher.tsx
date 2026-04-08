@@ -29,11 +29,11 @@ export default function IdentitySwitcher() {
           <button
             onClick={() => handleSwitch('auto')}
             className={cn(
-              "relative px-4 py-2 text-[10px] font-bold tracking-widest uppercase rounded-full transition-colors z-10 w-32 text-center",
+              "relative px-4 py-2 flex items-center justify-center transition-colors z-10 w-32",
               isAuto ? "text-white" : "text-white/40 hover:text-white"
             )}
           >
-            Grid Motors
+            <img src="/GRID_LOGO.jpg" alt="Grid Motors" className={cn("h-4 object-contain transition-all", isAuto ? "brightness-100" : "brightness-50 grayscale")} />
           </button>
           <button
             onClick={() => handleSwitch('re')}
