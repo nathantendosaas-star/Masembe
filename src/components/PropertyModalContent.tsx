@@ -1,6 +1,5 @@
 import type { Property } from '@/data/properties';
 import { useState } from 'react';
-import { db } from '@/lib/firebase';
 import { submitInquiry } from '@/hooks/useRealtimeDB';
 import { motion } from 'motion/react';
 

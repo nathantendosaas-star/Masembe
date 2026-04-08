@@ -1,12 +1,10 @@
-import { useState, useEffect, useMemo } from 'react';
-import { db, auth } from '@/lib/firebase';
+import { useState, useEffect } from 'react';
+import { auth } from '@/lib/firebase';
 import { 
   doc, 
   updateDoc, 
   deleteDoc, 
-  setDoc, 
-  orderBy,
-  limit
+  setDoc
 } from 'firebase/firestore';
 import { signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from 'firebase/auth';
 import type { User } from 'firebase/auth';

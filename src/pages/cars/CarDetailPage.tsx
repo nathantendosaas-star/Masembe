@@ -3,7 +3,6 @@ import { cars as staticCars } from '../../data/cars';
 import type { Car } from '../../data/cars';
 import { motion, useScroll, useTransform } from 'motion/react';
 import { useState, useRef } from 'react';
-import { db } from '../../lib/firebase';
 import { useFirestoreDoc } from '../../hooks/useFirestore';
 import { submitInquiry } from '../../hooks/useRealtimeDB';
 

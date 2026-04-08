@@ -3,7 +3,6 @@ import { motion, useScroll, useTransform, AnimatePresence, useSpring } from 'mot
 import { Link } from 'react-router-dom';
 import { MessageSquare, X, Send, ChevronDown } from 'lucide-react';
 import IdentitySwitcher from '../components/IdentitySwitcher';
-import { db } from '../lib/firebase';
 import { useFirestoreDoc } from '../hooks/useFirestore';
 import { submitInquiry } from '../hooks/useRealtimeDB';
 
