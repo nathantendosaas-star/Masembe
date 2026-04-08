@@ -14,7 +14,7 @@ export default function WhatsAppCTA() {
     ? "Hi Grid Motors, I'm interested in your luxury fleet."
     : "Hi Masembe Group, I'm interested in your real estate portfolio.";
 
-  const whatsappUrl = `https://wa.me/1234567890?text=${encodeURIComponent(message)}`;
+  const whatsappUrl = `https://wa.me/256750508658?text=${encodeURIComponent(message)}`;
 
   return (
     <motion.a

@@ -44,8 +44,12 @@ export default function GlobalHeader() {
           <Link to="/" className="text-3xl font-black tracking-tighter hover:scale-110 transition-transform mr-8 border-r border-current pr-6">
             M
           </Link>
-          <Link to={isAuto ? "/cars" : "/property"} className="text-xl md:text-2xl font-black tracking-tighter uppercase">
-            {isAuto ? 'Grid Motors' : 'Masembe Group'}
+          <Link to={isAuto ? "/cars" : "/property"} className="flex items-center">
+            {isAuto ? (
+              <img src="/GRID_LOGO.jpg" alt="Grid Motors" className="h-8 md:h-10 object-contain" />
+            ) : (
+              <span className="text-xl md:text-2xl font-black tracking-tighter uppercase">Masembe Group</span>
+            )}
           </Link>
         </div>
         
