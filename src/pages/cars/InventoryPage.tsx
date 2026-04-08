@@ -59,37 +59,38 @@ export default function InventoryPage() {
         </div>
 
         {/* Updated grid with better spacing and vertical stack on mobile */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16 md:gap-8 pb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 md:gap-8 pb-12">
           {filteredCars.map((car, index) => (
             <motion.div
               key={car.id}
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              className="group relative bg-gray-50 rounded-xl p-8 h-[450px] flex flex-col justify-between overflow-visible cursor-pointer transition-all duration-500 hover:shadow-2xl hover:bg-gray-100"
+              className="group relative bg-white border border-black/5 rounded-3xl p-10 h-[520px] flex flex-col justify-between overflow-hidden cursor-pointer transition-all duration-700 hover:shadow-[0_40px_80px_-15px_rgba(0,0,0,0.1)] hover:-translate-y-2"
               onClick={() => handleCarClick(car)}
             >
               <div className="z-10">
-                <h3 className="text-2xl font-bold uppercase tracking-tight">{car.make}</h3>
-                <p className="text-gray-500 font-medium text-lg">{car.model}</p>
+                <h3 className="text-3xl font-black uppercase tracking-tighter leading-none mb-2">{car.make}</h3>
+                <p className="text-black/40 font-bold text-sm tracking-widest uppercase">{car.model}</p>
               </div>
 
-              <div className="absolute inset-0 flex items-center justify-center pointer-events-none p-4">
+              <div className="flex-grow flex items-center justify-center relative my-8">
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 rounded-full blur-3xl scale-150" />
                 <img 
                   src={car.image} 
                   alt={car.model} 
-                  className="w-full max-h-[250px] object-contain transition-transform duration-500 group-hover:scale-110 group-hover:-translate-y-8 drop-shadow-2xl"
+                  className="w-full h-full max-h-[280px] md:max-h-[340px] object-contain transition-transform duration-700 group-hover:scale-110 group-hover:-rotate-2 drop-shadow-[0_20px_40px_rgba(0,0,0,0.2)]"
                 />
               </div>
 
-              <div className="z-10 flex justify-between items-end">
+              <div className="z-10 flex justify-between items-end border-t border-black/5 pt-8">
                 <div>
-                  <p className="text-xs text-gray-400 uppercase tracking-widest font-bold mb-1">Price</p>
-                  <p className="font-mono text-xl font-bold text-auto-accent">{car.price}</p>
+                  <p className="text-[10px] text-black/30 uppercase tracking-[0.2em] font-black mb-2">Investment</p>
+                  <p className="font-sans text-2xl font-black text-[#dc2626]">{car.price}</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-xs text-gray-400 uppercase tracking-widest font-bold mb-1">Power</p>
-                  <p className="font-mono text-xl font-bold">{car.hp} HP</p>
+                  <p className="text-[10px] text-black/30 uppercase tracking-[0.2em] font-black mb-2">Output</p>
+                  <p className="font-sans text-2xl font-black">{car.hp} HP</p>
                 </div>
               </div>
             </motion.div>
