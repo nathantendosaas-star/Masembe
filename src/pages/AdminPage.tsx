@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { auth } from '@/lib/firebase';
+import { db, auth } from '@/lib/firebase';
 import { 
   doc, 
   updateDoc, 
