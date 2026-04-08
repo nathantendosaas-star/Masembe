@@ -29,19 +29,19 @@ export default function PropertyModalContent({ property }: { property: Property 
     };
 
     try {
-      const submissionPromise = addDoc(collection(db, 'inquiries'), data);
-      const timeoutPromise = new Promise((_, reject) => 
-        setTimeout(() => reject(new Error('Submission timed out. Please check your connection.')), 10000)
-      );
-
-      await Promise.race([submissionPromise, timeoutPromise]);
-      
-      console.log("Property inquiry submitted successfully");
+      const docRef = await addDoc(collection(db, 'inquiries'), data);
+      console.log("Property inquiry submitted successfully with ID: ", docRef.id);
       setSubmitSuccess(true);
       e.currentTarget.reset();
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error submitting inquiry: ", error);
-      alert(error instanceof Error ? error.message : "There was an error submitting your inquiry. Please try again.");
+      let errorMessage = "There was an error submitting your inquiry. ";
+      if (error.code === 'permission-denied') {
+        errorMessage += "Access denied. Please ensure Firestore rules allow public submissions.";
+      } else {
+        errorMessage += error.message || "Please try again.";
+      }
+      alert(errorMessage);
     } finally {
       setIsSubmitting(false);
     }

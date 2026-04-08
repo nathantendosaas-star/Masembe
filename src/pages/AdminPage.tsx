@@ -1,11 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { db, auth } from '@/lib/firebase';
 import { 
   doc, 
   updateDoc, 
   deleteDoc, 
   setDoc, 
-  orderBy
+  orderBy,
+  limit
 } from 'firebase/firestore';
 import { signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from 'firebase/auth';
 import type { User } from 'firebase/auth';
@@ -188,7 +189,13 @@ export default function AdminPage() {
 
 function InquiriesTab() {
   const [filter, setFilter] = useState<'all' | 'new' | 'read'>('all');
-  const { data: inquiries, loading } = useFirestoreCollection<Inquiry>('inquiries', [orderBy('createdAt', 'desc')]);
+  
+  const constraints = useMemo(() => [
+    orderBy('createdAt', 'desc'),
+    limit(50)
+  ], []);
+
+  const { data: inquiries, loading, error } = useFirestoreCollection<Inquiry>('inquiries', constraints);
 
   const filteredInquiries = inquiries.filter(i => {
     if (filter === 'all') return i.status !== 'archived';
@@ -215,6 +222,20 @@ function InquiriesTab() {
   };
 
   if (loading) return <LoadingSpinner />;
+
+  if (error) {
+    return (
+      <div className="bg-red-50 border border-red-200 p-8 text-center rounded-lg">
+        <AlertCircle className="text-red-600 mx-auto mb-4" size={32} />
+        <h3 className="text-lg font-bold text-red-900 mb-2">Query Error</h3>
+        <p className="text-red-700 text-sm mb-4">{error.message}</p>
+        <p className="text-xs text-red-600 uppercase tracking-widest font-bold">
+          If this is a new setup, you may need to create a Firestore Index. 
+          Check the browser console for a link to generate it.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8">
