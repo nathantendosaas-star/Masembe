@@ -20,26 +20,33 @@ export function useFirestoreCollection<T = DocumentData>(
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
-    const q = query(collection(db, collectionName), ...queryConstraints);
-    
-    const unsubscribe = onSnapshot(q, 
-      (snapshot) => {
-        const items: T[] = [];
-        snapshot.forEach((doc) => {
-          items.push({ id: doc.id, ...doc.data() } as T);
-        });
-        setData(items);
-        setLoading(false);
-      },
-      (err) => {
-        console.error(`Error fetching collection ${collectionName}:`, err);
-        setError(err as Error);
-        setLoading(false);
-      }
-    );
+    try {
+      const q = query(collection(db, collectionName), ...queryConstraints);
+      
+      const unsubscribe = onSnapshot(q, 
+        (snapshot) => {
+          const items: T[] = [];
+          snapshot.forEach((doc) => {
+            items.push({ id: doc.id, ...doc.data() } as T);
+          });
+          setData(items);
+          setLoading(false);
+          setError(null);
+        },
+        (err) => {
+          console.error(`Error fetching collection ${collectionName}:`, err);
+          setError(err as Error);
+          setLoading(false);
+        }
+      );
 
-    return () => unsubscribe();
-  }, [collectionName]);
+      return () => unsubscribe();
+    } catch (err) {
+      console.error(`Error setting up query for ${collectionName}:`, err);
+      setError(err as Error);
+      setLoading(false);
+    }
+  }, [collectionName, queryConstraints]); // Added queryConstraints to dependencies
 
   return { data, loading, error };
 }
@@ -66,6 +73,7 @@ export function useFirestoreDoc<T = DocumentData>(
           setData(null);
         }
         setLoading(false);
+        setError(null);
       },
       (err) => {
         console.error(`Error fetching document ${collectionName}/${docId}:`, err);

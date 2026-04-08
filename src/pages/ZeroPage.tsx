@@ -94,16 +94,23 @@ export default function ZeroPage() {
     };
 
     try {
-      await addDoc(collection(db, 'inquiries'), data);
+      const docRef = await addDoc(collection(db, 'inquiries'), data);
+      console.log("ZeroPage inquiry submitted successfully with ID: ", docRef.id);
       setSubmitSuccess(true);
       setInquiryForm({ name: '', email: '', message: '' });
       setTimeout(() => {
         setSubmitSuccess(false);
         setShowInquiry(false);
       }, 3000);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error submitting inquiry: ", error);
-      alert("There was an error submitting your request. Please try again.");
+      let errorMessage = "There was an error submitting your request. ";
+      if (error.code === 'permission-denied') {
+        errorMessage += "Access denied. Please ensure Firestore rules allow public submissions.";
+      } else {
+        errorMessage += error.message || "Please try again.";
+      }
+      alert(errorMessage);
     } finally {
       setIsSubmitting(false);
     }
