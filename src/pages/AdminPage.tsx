@@ -689,7 +689,7 @@ function FormField({ label, value, onChange, type = 'text', multiline = false, p
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
           disabled={disabled}
-          className="w-full bg-white border border-black/5 p-4 text-sm focus:border-black outline-none transition-colors min-h-[120px] resize-none"
+          className="w-full bg-white border border-black/10 p-5 text-lg font-medium text-black focus:border-black outline-none transition-colors min-h-[150px] resize-none shadow-sm"
         />
       ) : (
         <input 
@@ -698,7 +698,7 @@ function FormField({ label, value, onChange, type = 'text', multiline = false, p
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
           disabled={disabled}
-          className="w-full bg-white border border-black/5 p-4 text-sm focus:border-black outline-none transition-colors"
+          className="w-full bg-white border border-black/10 p-5 text-lg font-medium text-black focus:border-black outline-none transition-colors shadow-sm"
         />
       )}
     </div>
