@@ -2,7 +2,6 @@ import { useParams } from 'react-router-dom';
 import { properties } from '@/data/properties';
 import { motion, useScroll, useTransform } from 'motion/react';
 import { useRef, useState } from 'react';
-import { db } from '@/lib/firebase';
 import { submitInquiry } from '@/hooks/useRealtimeDB';
 
 export default function PropertyDetailPage() {
