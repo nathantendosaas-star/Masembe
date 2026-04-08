@@ -48,7 +48,7 @@ export default function PropertyModalContent({ property }: { property: Property 
   };
 
   return (
-    <div className="p-8 pb-24 md:pb-32">
+    <div className="p-8 pb-12">
       <div className="flex flex-col md:flex-row justify-between items-end mb-8 border-b border-gray-200 pb-8">
         <div>
           <h1 className="text-4xl font-black uppercase">{property.name}</h1>

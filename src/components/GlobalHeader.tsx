@@ -68,7 +68,7 @@ export default function GlobalHeader() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             className={cn(
-              "fixed inset-0 z-50 flex flex-col items-center justify-center",
+              "fixed inset-0 z-50 flex flex-col items-center justify-center overflow-y-auto p-8",
               isAuto ? "bg-auto-bg text-auto-text" : "bg-re-bg text-re-text"
             )}
           >
