@@ -5,7 +5,7 @@ import 'swiper/swiper-bundle.css';
 
 // Dynamically import all images from new_re folder
 const allNewReImages = import.meta.glob('/public/assets/new_re/*.jpg', { eager: true, query: '?url', import: 'default' }) as Record<string, string>;
-const galleryImages = Object.values(allNewReImages);
+const galleryImages = Object.values(allNewReImages).filter(src => !src.toLowerCase().includes('logo'));
 
 export default function PortfolioPage() {
   return (
@@ -24,6 +24,7 @@ export default function PortfolioPage() {
           effect={'cards'}
           grabCursor={true}
           navigation
+          loop={true}
           autoplay={{ delay: 4000, disableOnInteraction: true }}
           className="w-full max-w-[400px] md:max-w-[500px] mt-12"
         >
