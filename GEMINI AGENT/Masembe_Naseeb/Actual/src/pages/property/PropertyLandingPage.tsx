@@ -1,6 +1,6 @@
 import { motion } from 'motion/react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Building2, MapPin, Key } from 'lucide-react';
+import { Building2, MapPin, Key } from 'lucide-react';
 
 export default function PropertyLandingPage() {
   return (

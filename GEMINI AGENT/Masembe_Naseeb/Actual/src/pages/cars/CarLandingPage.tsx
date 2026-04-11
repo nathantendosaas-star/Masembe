@@ -1,6 +1,6 @@
 import { motion } from 'motion/react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Shield, Zap, Globe } from 'lucide-react';
+import { Shield, Zap, Globe } from 'lucide-react';
 import ShowroomPage from './ShowroomPage';
 
 export default function CarLandingPage() {
