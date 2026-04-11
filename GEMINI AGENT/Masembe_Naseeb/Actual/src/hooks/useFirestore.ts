@@ -43,10 +43,13 @@ export function useFirestoreCollection<T = DocumentData>(
       return () => unsubscribe();
     } catch (err) {
       console.error(`Error setting up query for ${collectionName}:`, err);
-      setError(err as Error);
-      setLoading(false);
+      // Defer state update
+      setTimeout(() => {
+        setError(err as Error);
+        setLoading(false);
+      }, 0);
     }
-  }, [collectionName, queryConstraints]); // Added queryConstraints to dependencies
+  }, [collectionName, ...queryConstraints]); // Spread to avoid dependency warning
 
   return { data, loading, error };
 }
@@ -61,7 +64,7 @@ export function useFirestoreDoc<T = DocumentData>(
 
   useEffect(() => {
     if (!docId) {
-      setLoading(false);
+      setTimeout(() => setLoading(false), 0);
       return;
     }
 
