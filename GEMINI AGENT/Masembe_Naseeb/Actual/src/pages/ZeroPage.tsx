@@ -207,7 +207,6 @@ export default function ZeroPage() {
 
   return (
     <>
-      <div className="fixed top-0 left-0 z-[9999] p-4 bg-red-500 text-white text-xs">DEBUG: ZeroPage is rendering!</div>
       <div ref={containerRef} className="relative w-full bg-[#F7F7F5] text-black min-h-[800vh] font-sans selection:bg-black selection:text-white">
         {/* ... navbar ... */}
         <nav className="fixed top-0 left-0 w-full z-[100] flex items-center justify-between p-6 md:px-12 mix-blend-difference">
