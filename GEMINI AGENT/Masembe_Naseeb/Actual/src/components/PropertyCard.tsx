@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { clsx } from 'clsx';
+// Remove unused import
 
 interface PropertyCardProps {
   property: {
