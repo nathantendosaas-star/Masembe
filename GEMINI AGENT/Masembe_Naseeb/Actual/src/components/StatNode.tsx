@@ -17,9 +17,7 @@ export default function StatNode({ label, value, suffix = '', index, isActive }:
 
   useEffect(() => {
     if (isActive && typeof value === 'number') {
-      // Delay the counter to start after the landing animation (400ms + stagger)
       const delay = 0.4 + (index * 0.15);
-      
       gsap.to(valueRef.current, {
         val: value,
         duration: 1.5,
@@ -31,7 +29,8 @@ export default function StatNode({ label, value, suffix = '', index, isActive }:
       });
     } else if (!isActive && typeof value === 'number') {
       valueRef.current.val = 0;
-      setDisplayValue(0);
+      // Using requestAnimationFrame to defer state update avoids cascading render errors
+      requestAnimationFrame(() => setDisplayValue(0));
     } else {
       setDisplayValue(value);
     }

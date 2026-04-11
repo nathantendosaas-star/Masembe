@@ -31,6 +31,7 @@ export default function ParallaxShowroom({ items, theme }: ParallaxShowroomProps
   const [isTouch, setIsTouch] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const touchStartRef = useRef(0);
   
   const activeItem = items[activeIndex];
 
@@ -73,7 +74,6 @@ export default function ParallaxShowroom({ items, theme }: ParallaxShowroomProps
   const rotateY = mousePosition.x * 6;
 
   // Touch swipe handling
-  const touchStartRef = useRef(0);
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartRef.current = e.touches[0].clientX;
   };
