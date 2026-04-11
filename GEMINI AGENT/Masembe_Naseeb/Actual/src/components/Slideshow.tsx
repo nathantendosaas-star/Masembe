@@ -1,7 +1,7 @@
 import React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, EffectFade, Navigation } from 'swiper/modules';
-import 'swiper/css/bundle';
+import 'swiper/swiper-bundle.css';
 
 // Dynamically import all jpg images from the public assets folder, excluding any with "logo" in the name
 const importImages = import.meta.glob('/assets/new_re/*.jpg', { eager: true, query: '?url', import: 'default' }) as Record<string, string>;
