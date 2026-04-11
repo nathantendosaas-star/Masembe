@@ -1,22 +1,18 @@
 import { motion } from 'motion/react';
 import { useEffect } from 'react';
+
 export default function LoadingScreen({ onComplete }: { onComplete: () => void }) {
   useEffect(() => {
-    console.log("LoadingScreen: Setting timer");
     const timer = setTimeout(() => {
-      console.log("LoadingScreen: Timer finished, calling onComplete");
       onComplete();
     }, 3000);
-    return () => {
-      console.log("LoadingScreen: Cleaning up");
-      clearTimeout(timer);
-    };
+    return () => clearTimeout(timer);
   }, [onComplete]);
 
   return (
     <motion.div 
       className="fixed inset-0 z-[200] bg-black flex items-center justify-center"
-...
+      initial={{ opacity: 1 }}
       exit={{ opacity: 0, transition: { duration: 0.8 } }}
     >
       <div className="relative w-32 h-32">
