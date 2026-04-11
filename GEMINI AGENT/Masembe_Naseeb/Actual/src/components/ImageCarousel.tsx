@@ -1,7 +1,7 @@
 import React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, EffectFade } from 'swiper/modules';
-import 'swiper/css/bundle';
+import 'swiper/swiper-bundle.css';
 
 interface ImageCarouselProps {
   images: string[];
