@@ -14,7 +14,9 @@ export default function PropertyLandingPage() {
             loop 
             muted 
             playsInline
+            preload="auto"
             className="w-full h-full object-cover"
+            onCanPlay={(e) => (e.target as HTMLVideoElement).play()}
           />
         </div>
         
