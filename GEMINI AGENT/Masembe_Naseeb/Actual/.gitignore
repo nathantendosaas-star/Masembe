@@ -31,7 +31,5 @@ coverage
 /src/components/ParticleMesh3D.tsx
 /docs/
 *.webm
-*.mp4
-*.md
 /firebase-blueprint.json
 /firestore.rules

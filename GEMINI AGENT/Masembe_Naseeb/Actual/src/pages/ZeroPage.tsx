@@ -184,7 +184,7 @@ export default function ZeroPage() {
   const autoVideoFilter = useTransform(smoothProgress, [0.5, 0.52, 0.8, 0.85], ["blur(10px)", "blur(0px)", "blur(0px)", "blur(10px)"]);
   const autoVideoX = useTransform(smoothProgress, [0.5, 0.57, 0.8, 0.85], ["-100%", "0%", "0%", "-100%"]);
 
-  const reVideoUrl = "/assets/new_re/VID-20260408-WA0020.mp4";
+  const reVideoUrl = "/assets/new_re/re-bg.mp4";
   const autoVideoUrl = "/assets/new_grid/zero_grid.mp4"; 
 
   const DEFAULT_RE_SECTIONS = [
@@ -309,7 +309,7 @@ export default function ZeroPage() {
           {/* Sticky Video Side */}
           <motion.div style={{ x: isMobile ? 0 : autoVideoX }} className="w-full md:w-1/2 h-1/2 md:h-full relative overflow-hidden">
             <motion.div style={{ scale: autoVideoScale, filter: autoVideoFilter }} className="w-full h-full">
-              <video src={autoVideoUrl} poster="/assets/new_grid/zero_grid_poster.jpg" preload="auto" autoPlay loop muted playsInline onCanPlay={(e) => (e.target as HTMLVideoElement).play()} className="absolute inset-0 w-full h-full object-cover grayscale-[0.3]" />
+              <video src={autoVideoUrl} preload="auto" autoPlay loop muted playsInline onCanPlay={(e) => (e.target as HTMLVideoElement).play()} className="absolute inset-0 w-full h-full object-cover grayscale-[0.3]" />
             </motion.div>
             <div className="absolute inset-0 bg-black/5" />
             <div className="hidden md:block absolute right-0 top-0 w-32 h-full bg-gradient-to-l from-white to-transparent z-10" />
