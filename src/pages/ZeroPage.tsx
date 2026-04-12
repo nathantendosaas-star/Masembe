@@ -121,8 +121,8 @@ export default function ZeroPage() {
   const autoSections = cmsContent?.autoSections || DEFAULT_AUTO_SECTIONS;
   const heroTitle = cmsContent?.heroTitle || "Masembe\nCompanies";
   const heroSubtitle = cmsContent?.heroSubtitle || "The Collective Intelligence";
-  const reVideoUrl = cmsContent?.reVideoUrl || "/re-bg.mp4";
-  const autoVideoUrl = cmsContent?.autoVideoUrl || "/videoplayback.webm";
+  const reVideoUrl = cmsContent?.reVideoUrl || "/assets/re-bg.mp4";
+  const autoVideoUrl = cmsContent?.autoVideoUrl || "/assets/zero_grid.mp4";
 
   const handleInquirySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
